@@ -202,6 +202,222 @@
 <li>存储再vuex中的数据都是响应式的，能够实时保持数据于页面的同步。</li>
 </ol>
 <h3 id="1-4什么样的数据适合存储到Vuex中"><a href="#1-4什么样的数据适合存储到Vuex中" class="headerlink" title="1.4什么样的数据适合存储到Vuex中"></a>1.4什么样的数据适合存储到Vuex中</h3><p>一般情况下，只有组件之间的共享数据，才有必要存储到vuex中；对于组件中的私有数据，依旧存储再组件自身的data中即可。</p>
+<h2 id="2-Vuex的基本使用"><a href="#2-Vuex的基本使用" class="headerlink" title="2. Vuex的基本使用"></a>2. Vuex的基本使用</h2><h3 id="使用vuex时常见错误"><a href="#使用vuex时常见错误" class="headerlink" title="使用vuex时常见错误"></a>使用vuex时常见错误</h3><p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/241043eb00aa4cedb41c394a50aa4f83.png" alt="img"></p>
+<p>在安装vuex中，经常遇到上面的错误，这说明vuex安装的版本不正确，</p>
+<h3 id="查看vue版本号"><a href="#查看vue版本号" class="headerlink" title="查看vue版本号"></a>查看vue版本号</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list vue</span><br></pre></td></tr></table></figure>
+
+<p>查看的结果如下图所示：</p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/20200525085338532.png"></p>
+<p>或者直接再package.json文件中进行相关的查看</p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/20200525085426629.png" alt="img"></p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>如果你的vue是2.x则需要安装vuex3.x，因此只需要将vuex升级到3.xx就可以解决</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save vuex@3.6.2</span><br></pre></td></tr></table></figure>
+
+<p>如果安装的vuex是3.x则需要安装vuex4.x</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save vuex@4.0.0</span><br></pre></td></tr></table></figure>
+
+<p>升级vue的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save vue@3.02</span><br></pre></td></tr></table></figure>
+
+<h3 id="vuex使用步骤"><a href="#vuex使用步骤" class="headerlink" title="vuex使用步骤"></a>vuex使用步骤</h3><p>1.安装vuex依赖包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vuex --save</span><br></pre></td></tr></table></figure>
+
+<p>2.导入vuex包</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3.创建store对象</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">	<span class="comment">// state中存放的就是全局共享的数据</span></span><br><span class="line">	<span class="attr">state</span>: &#123; <span class="attr">count</span>: <span class="number">0</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>4.将store对象挂载到vue实例中</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">	<span class="attr">el</span>: <span class="string">&#x27;app&#x27;</span>,</span><br><span class="line">	<span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> <span class="title function_">h</span>(app),</span><br><span class="line">	router,</span><br><span class="line">	<span class="comment">// 将创建的共享数据对象，挂载到Vue实例中</span></span><br><span class="line">	<span class="comment">// 所有的组件，就可以直接从store中获取全局的数据了</span></span><br><span class="line">    store</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Vuex的核心概念"><a href="#3-Vuex的核心概念" class="headerlink" title="3. Vuex的核心概念"></a>3. Vuex的核心概念</h2><h3 id="3-1Vuex中的主要核心概念如下："><a href="#3-1Vuex中的主要核心概念如下：" class="headerlink" title="3.1Vuex中的主要核心概念如下："></a>3.1Vuex中的主要核心概念如下：</h3><ul>
+<li>State</li>
+<li>Mutation</li>
+<li>Action</li>
+<li>Getter</li>
+</ul>
+<h3 id="3-2State"><a href="#3-2State" class="headerlink" title="3.2State"></a>3.2State</h3><p>State提供唯一的公共资源，所有共享的数据都要统一放到Store的State中进行存储。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建store数据源，提供唯一公共数据</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">	<span class="attr">state</span>: &#123; <span class="attr">count</span>: <span class="number">0</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>组件访问State中数据的第一中方式</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">state</span>.全局数据名称</span><br></pre></td></tr></table></figure>
+
+<p>组件访问的state中数据的第二中方式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.从vuex中按需导入mapState函数</span></span><br><span class="line"><span class="keyword">import</span> &#123; mapState &#125; <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过刚才导入的mapSate函数，将当前组件需要的全局数据，映射为当前组件的computed计算属性</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2.将全局数据，映射为当前组件的计算属性</span></span><br><span class="line"><span class="attr">computed</span>: &#123;</span><br><span class="line">	...<span class="title function_">mapState</span>([<span class="string">&#x27;count&#x27;</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3Mutation"><a href="#3-3Mutation" class="headerlink" title="3.3Mutation"></a>3.3Mutation</h3><p>Mutation用于变更Store中的数据</p>
+<p>（1）只能通过mutation变更Store数据，不可以直接操作Stroe中的数据</p>
+<p>（2）通过这种方式虽然操作起来稍微复杂繁琐些，但是可以几种监控所有的数据变化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 定义Mutation</span><br><span class="line">const store = new Vuex.Store(&#123;</span><br><span class="line">	state: &#123;</span><br><span class="line">		count: 0</span><br><span class="line">	&#125;,</span><br><span class="line">	mutations: &#123;</span><br><span class="line">		add(state) &#123;</span><br><span class="line">			// 变更状态</span><br><span class="line">			state.count++</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>（3）在所使用的组件中，使用下面的方法进行触发，count值的变化</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 触发mutation</span></span><br><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">	<span class="title function_">handle_goubi</span>(<span class="params"></span>) &#123;</span><br><span class="line">		<span class="comment">// 触发mutations的第一种方式</span></span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&#x27;add&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="git在上传代码过程中遇到的问题"><a href="#git在上传代码过程中遇到的问题" class="headerlink" title="git在上传代码过程中遇到的问题"></a>git在上传代码过程中遇到的问题</h2><h3 id="1-报错原因"><a href="#1-报错原因" class="headerlink" title="1 报错原因"></a>1 报错原因</h3><p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/13d0a65b62004d6ba8386c14deaaf77c.png" alt="img"></p>
+<p>remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.</p>
+<p>根据提示，错误的原因是“对密码（password）身份验证的支持已于2021年8月13日删除。请改用个人访问令牌（token）。”</p>
+<p>这个是8月13日的变更，具体原因也不太清楚，下面是我自己摸索出来的解决办法，仅供参考。</p>
+<p>二、 github为什么要把密码换成token<br>github官方解释</p>
+<p>1、修改为token的动机</p>
+<p>我们描述了我们的动机，因为我们宣布了对 API 身份验证的类似更改，如下所示：</p>
+<p>近年来，GitHub 客户受益于 GitHub.com 的许多安全增强功能，例如双因素身份验证、登录警报、经过验证的设备、防止使用泄露密码和 WebAuthn 支持。 这些功能使攻击者更难获取在多个网站上重复使用的密码并使用它来尝试访问您的 GitHub 帐户。 尽管有这些改进，但由于历史原因，未启用双因素身份验证的客户仍能够仅使用其GitHub 用户名和密码继续对 Git 和 API 操作进行身份验证。</p>
+<p>从 2021 年 8 月 13 日开始，我们将在对 Git 操作进行身份验证时不再接受帐户密码，并将要求使用基于令牌（token）的身份验证，例如个人访问令牌（针对开发人员）或 OAuth 或 GitHub 应用程序安装令牌（针对集成商） GitHub.com 上所有经过身份验证的 Git 操作。 您也可以继续在您喜欢的地方使用 SSH 密钥（如果你要使用ssh密钥可以参考）。</p>
+<p>2、修改为token的好处</p>
+<p>令牌（token）与基于密码的身份验证相比，令牌提供了许多安全优势：</p>
+<p>唯一： 令牌特定于 GitHub，可以按使用或按设备生成</p>
+<p>可撤销：可以随时单独撤销令牌，而无需更新未受影响的凭据</p>
+<p>有限 ： 令牌可以缩小范围以仅允许用例所需的访问</p>
+<p>随机：令牌不需要记住或定期输入的更简单密码可能会受到的字典类型或蛮力尝试的影响<br>————————————————<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41010198/article/details/119698015">https://blog.csdn.net/weixin_41010198/article/details/119698015</a></p>
+<h3 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2 解决方法"></a>2 解决方法</h3><p>打开<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=github&spm=1001.2101.3001.7020">github</a>的Token<a target="_blank" rel="noopener" href="https://github.com/settings/tokens">设置页面</a>：<a target="_blank" rel="noopener" href="https://github.com/settings/tokens%EF%BC%8C%E7%82%B9%E5%87%BB%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AAToken%EF%BC%9A">https://github.com/settings/tokens，点击生成一个Token：</a></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/b0b9f559b7844d98912a7d7204160ca2.png" alt="img"></p>
+<p>具体设置如下：</p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/0410458e9e7146efbbd33f9199c687f8.png" alt="img"></p>
+<p>后续的设置可以根据自己需要选择，对于大部分用户来说勾上“repo”应该就够用了。<br>创建Token成功后复制这个Token：</p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/29b42c36da81436e947a73ab8377eea1.png" alt="img"></p>
+<p>以下操作针对于Window操作系统，首先打开控制面板，将查看方式切换到“小图标”，再打开“凭据管理”。</p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/48d9781d224044d5a3d94245c30af525.png" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/bd67116102a54cb289c316d2ca541b1b.png" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/9fa8fde833e244c286f1d5afd2c07ccb.png" alt="img"></p>
+<p>再次操作就不会出现刚才的报错了，其他操作系统也有相应的修改凭据操作，可以尝试一下。</p>
+<h1 id="各种好看的图片"><a href="#各种好看的图片" class="headerlink" title="各种好看的图片"></a>各种好看的图片</h1><h2 id="骚货小美女"><a href="#骚货小美女" class="headerlink" title="骚货小美女"></a>骚货小美女</h2><p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey9383.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/exyeq5.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/exygy1.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/exz2e8.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/exz8ez.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey82aj.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey89iy.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey8h48.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey9383-1653367723596.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey8m9a.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/ey8t66.jpg" alt="img"></p>
+<h2 id="良家少妇一件件脱给你看"><a href="#良家少妇一件件脱给你看" class="headerlink" title="良家少妇一件件脱给你看"></a>良家少妇一件件脱给你看</h2><p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/001.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/002.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/003.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/004.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/005.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/006.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/007.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/008.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/009.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/010.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/011.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/012.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/013.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/014.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/015.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/016.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/017.jpg" alt="img"></p>
+<p><img src="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/018.jpg" alt="img"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python,字符串分割,pythontime的使用</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-自己看的博客文章" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/17/%E8%87%AA%E5%B7%B1%E7%9C%8B%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">我的第一篇博客文章</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/17/%E8%87%AA%E5%B7%B1%E7%9C%8B%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" class="archive-article-date">
+  	<time datetime="2022-05-17T06:37:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第一章vue项目的创建方法"><a href="#第一章vue项目的创建方法" class="headerlink" title="第一章vue项目的创建方法"></a>第一章vue项目的创建方法</h2><p><img src="/%E6%97%A0%E6%A0%87%E9%A2%98.jpg"></p>
+<p>方法一：</p>
+<p>若没有安装VueCLI则需要执行下面的命令进行安装或者升级</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --global @vue/cli</span><br></pre></td></tr></table></figure>
+
+<p>使用命令创建vue项目demo2990</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack demo2990</span><br><span class="line">vue ui <span class="comment"># 启动vue的界面</span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="第二章大阴蒂的小瘦妞"><a href="#第二章大阴蒂的小瘦妞" class="headerlink" title="第二章大阴蒂的小瘦妞"></a><a target="_blank" rel="noopener" href="https://cc.wm964.com/viewtopic/202388.html">第二章大阴蒂的小瘦妞</a></h2><p>内容</p>
+<hr>
+<h1 id="Vuex的相关的学习资料"><a href="#Vuex的相关的学习资料" class="headerlink" title="Vuex的相关的学习资料"></a>Vuex的相关的学习资料</h1><h2 id="1-Vuex概述"><a href="#1-Vuex概述" class="headerlink" title="1.Vuex概述"></a>1.Vuex概述</h2><h3 id="1-1组件之间共享数据的方式"><a href="#1-1组件之间共享数据的方式" class="headerlink" title="1.1组件之间共享数据的方式"></a>1.1组件之间共享数据的方式</h3><p>父向子传值：v-bind属性绑定</p>
+<p>子向父传值：v-on事件绑定</p>
+<p>兄弟组件之间共享数据：EventBus</p>
+<ul>
+<li>$on 接收数据的那个组件</li>
+<li>$emit发送数据的那个组件</li>
+</ul>
+<h3 id="1-2Vuex是什么"><a href="#1-2Vuex是什么" class="headerlink" title="1.2Vuex是什么"></a>1.2Vuex是什么</h3><p>Vuex是实现组件全局状态（数据）管理的一种机制，可以方便的实现组件之间数据的共享。</p>
+<p><img src="/image-20220523170157938.png" alt="image-20220523170157938"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3使用Vuex统一管理状态的好处"><a href="#1-3使用Vuex统一管理状态的好处" class="headerlink" title="1.3使用Vuex统一管理状态的好处"></a>1.3使用Vuex统一管理状态的好处</h3><ol>
+<li>能够在vuex中几种管理共享的数据，易于开发和后期维护</li>
+<li>能够高效地实现数据共享，提高开发效率。</li>
+<li>存储再vuex中的数据都是响应式的，能够实时保持数据于页面的同步。</li>
+</ol>
+<h3 id="1-4什么样的数据适合存储到Vuex中"><a href="#1-4什么样的数据适合存储到Vuex中" class="headerlink" title="1.4什么样的数据适合存储到Vuex中"></a>1.4什么样的数据适合存储到Vuex中</h3><p>一般情况下，只有组件之间的共享数据，才有必要存储到vuex中；对于组件中的私有数据，依旧存储再组件自身的data中即可。</p>
 <h2 id="2-Vuex的基本使用"><a href="#2-Vuex的基本使用" class="headerlink" title="2. Vuex的基本使用"></a>2. Vuex的基本使用</h2><h3 id="使用vuex时常见错误"><a href="#使用vuex时常见错误" class="headerlink" title="使用vuex时常见错误"></a>使用vuex时常见错误</h3><p><img src="E:\src\blog\source_posts\我的第一篇博客文章\241043eb00aa4cedb41c394a50aa4f83.png" alt="img"></p>
 <p>在安装vuex中，经常遇到上面的错误，这说明vuex安装的版本不正确，</p>
 <h3 id="查看vue版本号"><a href="#查看vue版本号" class="headerlink" title="查看vue版本号"></a>查看vue版本号</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list vue</span><br></pre></td></tr></table></figure>
@@ -256,6 +472,12 @@
 
 <p>（3）在所使用的组件中，使用下面的方法进行触发，count值的变化</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 触发mutation</span></span><br><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">	<span class="title function_">handle_goubi</span>(<span class="params"></span>) &#123;</span><br><span class="line">		<span class="comment">// 触发mutations的第一种方式</span></span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&#x27;add&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-Mutation"><a href="#3-3-Mutation" class="headerlink" title="3.3 Mutation"></a>3.3 Mutation</h3><p>Action用于处理异步任务。</p>
+<p>如果通过异步操作变更数据，必须通过Action，而不能使用Mutation，但是再Action中还是要通过触发Mutation的方式间接变更数据。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义Action</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">	<span class="comment">// ...省略其他代码</span></span><br><span class="line">	<span class="attr">mutations</span>: &#123;</span><br><span class="line">		<span class="title function_">add</span>(<span class="params">state</span>) &#123;</span><br><span class="line">			state.<span class="property">count</span>++</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">actions</span>: &#123;</span><br><span class="line">		<span class="title function_">addAsync</span>(<span class="params">context</span>) &#123;</span><br><span class="line">			<span class="title function_">setTimeOut</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">				context.<span class="title function_">comit</span>(<span class="string">&#x27;add&#x27;</span>)</span><br><span class="line">			&#125;, <span class="number">1000</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// </span><br><span class="line">methods: &#123;</span><br><span class="line">	handle()&#123;</span><br><span class="line">		// </span><br><span class="line">		this.$store.dispatch(&#x27;addAsync&#x27;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -338,7 +560,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/17/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/05/17/%E8%87%AA%E5%B7%B1%E7%9C%8B%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">展开全文 >></a>
         </p>
       
 
